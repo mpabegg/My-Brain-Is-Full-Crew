@@ -435,7 +435,7 @@ Only changed files are updated. Your vault notes are never touched.
 
 ```
 My-Brain-Is-Full-Crew/               ← cloned inside your vault
-├── agents/                          The 8 core agents
+├── agents/                          The 9 core agents
 │   ├── architect.md                   Vault setup & onboarding
 │   ├── scribe.md                      Text capture & note creation
 │   ├── sorter.md                      Inbox triage & filing
@@ -443,7 +443,8 @@ My-Brain-Is-Full-Crew/               ← cloned inside your vault
 │   ├── connector.md                   Knowledge graph & link analysis
 │   ├── librarian.md                   Vault health & maintenance
 │   ├── transcriber.md                 Audio & meeting transcription
-│   └── postman.md                     Email & calendar integration
+│   ├── postman.md                     Email & calendar integration
+│   └── snapshotter.md                 Git snapshots and background backups
 ├── skills/                          The 14 specialized skills
 │   ├── onboarding/SKILL.md            Full vault setup conversation
 │   ├── create-agent/SKILL.md          Design a custom agent step by step

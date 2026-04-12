@@ -53,12 +53,12 @@ Custom agents are created by the Architect through a conversational flow with th
 ### Naming Rules
 
 - Custom agent names must be lowercase, hyphens only (e.g., `habit-tracker`, `recipe-manager`)
-- Names must NOT conflict with core agent names: architect, scribe, sorter, seeker, connector, librarian, transcriber, postman
+- Names must NOT conflict with core agent names: architect, scribe, sorter, seeker, connector, librarian, transcriber, postman, snapshotter
 - Names should be descriptive and concise (1-2 words)
 
 ### Priority
 
-Custom agents always have lower routing priority than the 8 core agents. The dispatcher checks custom agents only when no core agent matches the user's message. Among custom agents, the dispatcher uses the Input column to find the best match
+Custom agents always have lower routing priority than the 9 core agents. The dispatcher checks custom agents only when no core agent matches the user's message. Among custom agents, the dispatcher uses the Input column to find the best match
 
 ---
 

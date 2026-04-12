@@ -18,6 +18,7 @@ The registry is designed to grow: custom agents (see Issue #12) are added as new
 | librarian | Vault Health & Quality Assurance | Detect/merge duplicates, fix broken links, audit frontmatter, growth analytics. Full Bash access. | Maintenance, audit, cleanup, health check, duplicate detection | Health reports, fixed links, merged duplicates, consistency reports | active |
 | transcriber | Audio & Meeting Intelligence | Process transcriptions into structured notes, extract action items, speaker detection | Audio recordings, transcriptions, meeting notes, lecture/podcast processing | Structured meeting/lecture notes in `00-Inbox/` with action items, decisions, topics | active |
 | postman | Email & Calendar Intelligence | Read/archive/delete email (Gmail via `gws`, Hey.com via `hey`), search emails, read/create/update calendar events, draft and send replies. Uses Google Workspace CLI (`gws`) and/or Hey CLI (`hey`) via Bash, with MCP as read-only fallback. | Email triage, calendar queries, deadline tracking, meeting prep, VIP filtering | Email summaries saved as notes in `00-Inbox/`, calendar events created, deadline reports | active |
+| snapshotter | Git Snapshot & Background Backup | Create local git snapshot commits for eligible Brain workspace changes, both manual and automatic background runs. Uses `git` only and never pushes automatically. | Manual backup requests, automatic post-edit backup hook | Short snapshot status, local commit created when eligible, sensitive files skipped | active |
 <!-- MBIFC:CUSTOM_AGENTS_START -->
 <!-- MBIFC:CUSTOM_AGENTS_END -->
 
@@ -53,12 +54,12 @@ Custom agents are created by the Architect through a conversational flow with th
 ### Naming Rules
 
 - Custom agent names must be lowercase, hyphens only (e.g., `habit-tracker`, `recipe-manager`)
-- Names must NOT conflict with core agent names: architect, scribe, sorter, seeker, connector, librarian, transcriber, postman
+- Names must NOT conflict with core agent names: architect, scribe, sorter, seeker, connector, librarian, transcriber, postman, snapshotter
 - Names should be descriptive and concise (1-2 words)
 
 ### Priority
 
-Custom agents always have lower routing priority than the 8 core agents. The dispatcher checks custom agents only when no core agent matches the user's message. Among custom agents, the dispatcher uses the Input column to find the best match
+Custom agents always have lower routing priority than the 9 core agents. The dispatcher checks custom agents only when no core agent matches the user's message. Among custom agents, the dispatcher uses the Input column to find the best match
 
 ---
 

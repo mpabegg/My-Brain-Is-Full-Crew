@@ -4,11 +4,11 @@
 
 ## ABSOLUTE CONSTRAINT: ONLY skills and agents from THIS project
 
-Your crew consists of **14 skills** (in `.claude/skills/`) and **8 core agents** (in `.claude/agents/`). Your agent platform auto-loads both at session start.
+Your crew consists of **14 skills** (in `.claude/skills/`) and **9 core agents** (in `.claude/agents/`). Your agent platform auto-loads both at session start.
 
-The 8 core agents are:
+The 9 core agents are:
 
-`architect`, `scribe`, `sorter`, `seeker`, `connector`, `librarian`, `transcriber`, `postman`
+`architect`, `scribe`, `sorter`, `seeker`, `connector`, `librarian`, `transcriber`, `postman`, `snapshotter`
 
 Custom agents created by the Architect are also valid. Check `.claude/references/agents-registry.md` for the full list of active agents (core + custom).
 
@@ -54,6 +54,30 @@ Skills handle complex, multi-step flows. **Check this table BEFORE the agent tab
 | 13 | `/inbox-triage` | Process all notes in 00-Inbox/: classify, route, update MOCs, extract actions, daily digest. | EN: "triage the inbox", "clean up the inbox", "sort my notes", "empty inbox", "file my notes", "process the inbox" · IT: "smista l'inbox", "svuota l'inbox", "ordina le note", "triage dell'inbox", "processa l'inbox" · FR: "trier la boîte de réception", "vider l'inbox", "classer mes notes" · ES: "clasificar la bandeja de entrada", "vaciar el inbox", "ordenar mis notas" · DE: "Inbox sortieren", "Inbox leeren", "Notizen einordnen" · PT: "triagem da inbox", "esvaziar a inbox", "organizar minhas notas" |
 | 14 | `/contact-sync` | Sync a person to Apple Contacts: search, create if missing, update if incomplete. Requires `apple-contacts` MCP. | EN: "sync contact", "add to contacts", "save contact", "update contact", "is this person in my contacts" · IT: "sincronizza contatto", "aggiungi ai contatti", "salva contatto", "aggiorna contatto" · FR: "synchroniser le contact", "ajouter aux contacts" · ES: "sincronizar contacto", "agregar a contactos" · DE: "Kontakt synchronisieren", "zu Kontakten hinzufuegen" · PT: "sincronizar contato", "adicionar aos contatos" |
 
+### Automatic workflow hook — git backup
+
+Before responding at the end of an interaction, check whether the assistant changed files in the Brain workspace. If eligible git changes exist, invoke the `snapshotter` subagent in the background to create a commit. The background workflow must:
+
+- create the commit automatically when there are eligible changes
+- never push automatically
+- stay silent in the final user-facing reply when the background commit succeeds
+- surface a short note only if the user explicitly asked for a backup or the background commit fails
+- skip obvious secret files
+
+Use an explicit background prompt for this invocation:
+
+```text
+Automatic background snapshot. Run silently unless there is a failure.
+Mode: background.
+User did not explicitly ask for a backup.
+Create a local commit only if there are eligible changes.
+Never push.
+Return exactly one line.
+If commit succeeds, start with: "snapshot ok:"
+If there is nothing to commit, start with: "snapshot skipped:"
+If there is a failure, start with: "snapshot failed:"
+```
+
 ---
 
 ## Agent routing (fallback — only if NO skill matched above)
@@ -70,7 +94,8 @@ When a message does NOT match any skill trigger above, use this table. Activate 
 | 6 | **sorter** | Smart batch, priority triage, project pulse (NOT standard inbox triage — that's a skill) |
 | 7 | **connector** | Links between notes, graph, MOCs, relationships, cross-linking |
 | 8 | **librarian** | Quick health check, consistency report, growth analytics, stale content (NOT full audit, deep clean, or tag garden — those are skills) |
-| 9+ | **custom agents** | Any agent created via the Architect. Check `.claude/references/agents-registry.md` for triggers and capabilities. Custom agents always have lower priority than core 8. |
+| 9 | **snapshotter** | Git snapshot/backup commits for the Brain workspace, including automatic background commits after file edits |
+| 10+ | **custom agents** | Any agent created via the Architect. Check `.claude/references/agents-registry.md` for triggers and capabilities. Custom agents always have lower priority than core 9. |
 
 ---
 
@@ -150,7 +175,17 @@ Triggers: "quick check", "consistency report", "growth analytics", "stale conten
 
 ---
 
-## 9. CUSTOM AGENTS
+## 9. SNAPSHOTTER (agent)
+
+Activate for manual git backup requests and for the dispatcher's automatic background snapshot workflow.
+
+Triggers: "fazer backup do brain", "criar commit do vault", "salvar snapshot git", "gerar backup git", "commitar mudanças do brain", "registrar snapshot", "fazer snapshot do vault"
+
+> **Note**: when this agent is invoked automatically after file edits, it should run in the background and the dispatcher should not mention successful commits in the final reply unless the user explicitly asked for a backup.
+
+---
+
+## 10. CUSTOM AGENTS
 
 Custom agents are created via the `/create-agent` skill and stored in `.claude/agents/`. They are auto-discovered like core agents. When a user message does not match any skill or core agent, check `.claude/references/agents-registry.md` for custom agents whose Input column matches the message. If a match is found, delegate to that agent.
 
@@ -217,7 +252,7 @@ See `.claude/references/agent-orchestration.md` for the full protocol and `.clau
 
 ## My Brain Is Full - Crew
 
-A crew of 8 AI subagents that manage an Obsidian vault through natural conversation.
+A crew of 9 AI subagents that manage an Obsidian vault through natural conversation.
 
 ## Installation
 
@@ -244,7 +279,7 @@ The script asks a couple of questions and copies everything into `.claude/` insi
 ```
 your-vault/
 ├── .claude/
-│   ├── agents/          ← 8 crew agents (auto-loaded at session start)
+│   ├── agents/          ← 9 crew agents (auto-loaded at session start)
 │   └── references/      ← shared docs the agents read
 ├── .mcp.json            ← Gmail + Calendar (optional, if you chose yes)
 ├── My-Brain-Is-Full-Crew/  ← the repo (for updates)
@@ -277,7 +312,7 @@ Only changed files are overwritten. Your vault notes are never touched.
 
 ```
 My-Brain-Is-Full-Crew/
-├── agents/                   The 8 subagents
+├── agents/                   The 9 subagents
 │   ├── architect.md            Vault setup & onboarding
 │   ├── scribe.md               Text capture & note creation
 │   ├── sorter.md               Inbox triage & filing
@@ -285,7 +320,8 @@ My-Brain-Is-Full-Crew/
 │   ├── connector.md            Knowledge graph & link analysis
 │   ├── librarian.md            Vault health & maintenance
 │   ├── transcriber.md          Audio & meeting transcription
-│   └── postman.md              Email & calendar integration
+│   ├── postman.md              Email & calendar integration
+│   └── snapshotter.md          Git snapshots and background backups
 ├── references/               Shared agent documentation
 ├── docs/                     User-facing documentation
 ├── scripts/

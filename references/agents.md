@@ -128,6 +128,10 @@ The dispatcher routes triggers to skills FIRST, then falls through to agents.
 
 ## Quick Reference: When to Suggest Another Agent
 
+### Automatic background agent hook
+
+At the end of an interaction, if the assistant changed files inside the Brain workspace and those changes are eligible for backup, the dispatcher should invoke the `snapshotter` subagent in the background before sending the final reply. This workflow creates a commit but never performs `git push` automatically. Successful background commits should stay out of the final user-facing message unless the user explicitly asked for a backup.
+
 When an agent detects work for another agent, it includes a `### Suggested next agent` section in its output. The dispatcher reads this and decides whether to chain the next agent. See `.platform/references/agent-orchestration.md` for the full protocol.
 
 | Situation | Suggest |

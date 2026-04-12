@@ -106,6 +106,30 @@ After each agent returns, the dispatcher:
 
 The dispatcher can also chain agents **without an explicit suggestion** if the output clearly matches another agent's capabilities (e.g., notes created → Sorter might be needed).
 
+### Special case: background `snapshotter`
+
+Automatic backup runs are a dispatcher-owned background flow, not a normal user-visible chain step.
+
+When the dispatcher invokes `snapshotter` automatically after file edits, it should pass an explicit prompt like:
+
+```text
+Automatic background snapshot. Run silently unless there is a failure.
+Mode: background.
+User did not explicitly ask for a backup.
+Create a local commit only if there are eligible changes.
+Never push.
+Return exactly one line.
+If commit succeeds, start with: "snapshot ok:"
+If there is nothing to commit, start with: "snapshot skipped:"
+If there is a failure, start with: "snapshot failed:"
+```
+
+Dispatcher handling rules for that one-line result:
+
+- `snapshot ok:` → do not mention it in the final user-facing reply
+- `snapshot skipped:` → do not mention it in the final user-facing reply
+- `snapshot failed:` → surface a short note in the final user-facing reply
+
 ---
 
 ## Call Chain Tracking

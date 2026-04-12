@@ -241,9 +241,9 @@ terms-accepted-date: "YYYY-MM-DD"
 
 **This step is mandatory. Do not skip it.**
 
-After collecting consent, ask the user if they have any specific needs that the 8 core agents do not cover.
+After collecting consent, ask the user if they have any specific needs that the 9 core agents do not cover.
 
-> "The 8 core agents handle most use cases, but I can also create **custom agents** tailored to your specific needs. For example: a health tracker, a recipe manager, a habit logger, a CRM for contacts, a reading list curator — anything you want.
+> "The 9 core agents handle most use cases, but I can also create **custom agents** tailored to your specific needs. For example: a health tracker, a recipe manager, a habit logger, a CRM for contacts, a reading list curator — anything you want.
 >
 > Do you have any specific workflow or need that you would like a custom agent for? If not, we can always create one later — just say 'create a new agent' at any time."
 

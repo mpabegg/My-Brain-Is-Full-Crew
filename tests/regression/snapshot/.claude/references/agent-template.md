@@ -212,5 +212,5 @@ When generating a custom agent from this template:
 4. **The Core Responsibilities section** must be deeply detailed. Ask the user enough questions to fill this section thoroughly. A vague agent is a useless agent
 5. **Every custom agent** gets a row in `.claude/references/agents-registry.md` and a section in `.claude/references/agents.md`
 6. **File location**: `.claude/agents/{{agent-name}}.md`
-7. **Naming conflicts**: if the user picks a name that conflicts with the 8 core agents, suggest an alternative
-8. **Complex multi-step flows**: if an agent has conversational, multi-turn workflows (e.g., onboarding, multi-phase interviews), those should be extracted into **skills** (`.claude/skills/`) rather than kept in the agent body. Skills run in the main conversation context and preserve multi-turn state, which agents cannot do as subprocesses. See the 13 core skills in `.claude/references/agents.md` (Skills section) for examples
+7. **Naming conflicts**: if the user picks a name that conflicts with the 9 core agents, suggest an alternative
+8. **Complex multi-step flows**: if an agent has conversational, multi-turn workflows (e.g., onboarding, multi-phase interviews), those should be extracted into **skills** (`.claude/skills/`) rather than kept in the agent body. Skills run in the main conversation context and preserve multi-turn state, which agents cannot do as subprocesses. See the 14 core skills in `.claude/references/agents.md` (Skills section) for examples
