@@ -34,11 +34,14 @@ If the prompt is ambiguous, assume automatic background mode.
 ## Safety Rules
 
 1. Use `git` only. Do not rely on `gh` or other external tools.
-2. Never push automatically.
-3. Never rewrite history. Do not use force push, reset, rebase, amend, or destructive git operations.
-4. Do not commit obvious secrets such as `.env`, `.env.*`, `*.pem`, `*.key`, `credentials*.json`, `token*.json`, or similarly sensitive files.
-5. If there are no eligible changes, report that briefly and stop.
-6. Keep output short. In automatic background mode, output exactly one line.
+2. Run every `git` command with `XDG_CONFIG_HOME="$HOME/.config"` explicitly set for that command so the agent does not inherit a broken `XDG_CONFIG_HOME` override from the parent `opencode` process.
+3. Never push automatically.
+4. Never rewrite history. Do not use force push, reset, rebase, amend, or destructive git operations.
+5. Do not commit obvious secrets such as `.env`, `.env.*`, `*.pem`, `*.key`, `credentials*.json`, `token*.json`, or similarly sensitive files.
+6. If there are no eligible changes, report that briefly and stop.
+7. Keep output short. In automatic background mode, output exactly one line.
+
+Example: `env XDG_CONFIG_HOME="$HOME/.config" git status --short`
 
 ---
 
